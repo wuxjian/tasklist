@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function ApplicationAdd(arg1:main.Application):Promise<void>;
 
+export function ApplicationDelete(arg1:number):Promise<void>;
+
 export function ApplicationList():Promise<Array<main.Application>>;
 
 export function ApplicationStart(arg1:string):Promise<void>;

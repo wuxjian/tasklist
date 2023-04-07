@@ -46,20 +46,34 @@ func (a *App) Greet(name string) string {
 }
 
 type Application struct {
-	gorm.Model
+	Id              uint   `json:"id"`
 	Name            string `json:"name"`
 	Code            string `json:"code"`
+	Status          bool   `json:"status" gorm:"-"`
 	ApplicationPath string `json:"applicationPath"`
 }
 
 func (a *App) ApplicationAdd(application Application) {
+	if application.Id > 0 {
+		db.Save(&application)
+	}
+
 	db.Create(&application)
 }
 
+func (a *App) ApplicationDelete(id uint) {
+	db.Delete(&Application{}, id)
+}
+
 func (a *App) ApplicationList() []Application {
-	fmt.Println("ApplicationList")
 	var l []Application
 	db.Order("id desc").Find(&l)
+	for i, v := range l {
+		status := a.ApplicationStatus(v.Code)
+		v.Status = status
+		l[i] = v
+	}
+	fmt.Println("ApplicationList")
 	return l
 }
 

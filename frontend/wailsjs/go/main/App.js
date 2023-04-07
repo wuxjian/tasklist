@@ -6,6 +6,10 @@ export function ApplicationAdd(arg1) {
   return window['go']['main']['App']['ApplicationAdd'](arg1);
 }
 
+export function ApplicationDelete(arg1) {
+  return window['go']['main']['App']['ApplicationDelete'](arg1);
+}
+
 export function ApplicationList() {
   return window['go']['main']['App']['ApplicationList']();
 }
