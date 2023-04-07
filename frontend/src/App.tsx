@@ -1,9 +1,10 @@
 import './App.css';
-import {Button, Divider, Input, Modal, Space, Table} from "antd";
+import {Button, Divider, Input, Modal, Space, Table, Tag} from "antd";
 import {ColumnsType} from "antd/es/table";
 import {main} from "../wailsjs/go/models";
 import {useEffect, useState} from "react";
-import {ApplicationAdd, ApplicationDelete, ApplicationList, ApplicationStatus} from "../wailsjs/go/main/App";
+import {ApplicationAdd, ApplicationDelete, ApplicationList, ApplicationStart} from "../wailsjs/go/main/App";
+import {CheckCircleOutlined, MinusCircleOutlined,} from '@ant-design/icons';
 import Application = main.Application;
 
 const emptyApp: Application = {
@@ -13,8 +14,6 @@ const emptyApp: Application = {
     applicationPath: "",
     status: false
 }
-
-// 应用状态
 
 
 function App() {
@@ -78,6 +77,11 @@ function App() {
         await fetchData()
     }
 
+    const handleStart = async (app: Application) => {
+        await ApplicationStart(app.applicationPath)
+        await fetchData()
+    }
+
     const columns: ColumnsType<main.Application> = [
         {
             title: 'id',
@@ -102,15 +106,25 @@ function App() {
         {
             title: '状态',
             key: 'status',
-            render: (_, record) => (
-                <span>{record.status ? '运行': '未运行'}</span>
-            ),
+            render: (_, record) => {
+                if (record.status) {
+                    return <Tag icon={<CheckCircleOutlined/>} color="success">
+                        run
+                    </Tag>
+                }
+                return <Tag icon={<MinusCircleOutlined/>} color="default">
+                    stop
+                </Tag>
+            }
         },
         {
             title: '操作',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
+                    {record.status ? null :
+                        <a onClick={() => handleStart(record)}>启动</a>
+                    }
                     <a onClick={() => handleEdit(record)}>编辑</a>
                     <a onClick={() => handleDelete(record)}>删除</a>
                 </Space>
@@ -127,24 +141,24 @@ function App() {
             <Divider/>
             <Table columns={columns} dataSource={applicationList}/>
             <Modal title="新增/修改" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                    <Input placeholder="name"
-                           value={curApp.name}
-                           onChange={e => setCurApp({
-                               ...curApp,
-                               name: e.target.value
-                           })}/>
-                    <Input placeholder="code"
-                           value={curApp.code}
-                           onChange={e => setCurApp({
-                               ...curApp,
-                               code: e.target.value
-                           })}/>
-                    <Input placeholder="path"
-                           value={curApp.applicationPath}
-                           onChange={e => setCurApp({
-                               ...curApp,
-                               applicationPath: e.target.value
-                           })}/>
+                <Input placeholder="name"
+                       value={curApp.name}
+                       onChange={e => setCurApp({
+                           ...curApp,
+                           name: e.target.value
+                       })}/>
+                <Input placeholder="code"
+                       value={curApp.code}
+                       onChange={e => setCurApp({
+                           ...curApp,
+                           code: e.target.value
+                       })}/>
+                <Input placeholder="path"
+                       value={curApp.applicationPath}
+                       onChange={e => setCurApp({
+                           ...curApp,
+                           applicationPath: e.target.value
+                       })}/>
             </Modal>
         </div>
     )
