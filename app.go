@@ -73,12 +73,12 @@ func (a *App) ApplicationList() []Application {
 		v.Status = status
 		l[i] = v
 	}
-	fmt.Println("ApplicationList")
+	fmt.Printf("ApplicationList %+v\n", l)
 	return l
 }
 
 func (a *App) ApplicationStart(p string) error {
-	c := exec.Command("cmd", "/c", "start", p)
+	c := exec.Command("cmd", "/c", "start", "/b", p)
 	return c.Run()
 }
 
