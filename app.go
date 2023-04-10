@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
+	"log"
 	"os/exec"
 )
 
@@ -24,20 +25,21 @@ func NewApp() *App {
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
+	log.Println("app init")
 	a.ctx = ctx
 	var err error
 	db, err = gorm.Open(sqlite.Open("database.db"), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
-		panic(err) // todo
+		log.Fatalf("创建Db失败%v", err)
 	}
 	// 初始化表
 	err = db.AutoMigrate(&Application{})
 	if err != nil {
-		panic(err) // todo
+		log.Fatalf("初始化表失败%v", err)
 	}
-
+	log.Println("app init end")
 }
 
 // Greet returns a greeting for the given name
@@ -95,4 +97,8 @@ func (a *App) ApplicationStatus(appName string) bool {
 		return true
 	}
 	return false
+}
+
+func (a *App) log(s string) {
+	log.Println(s)
 }
