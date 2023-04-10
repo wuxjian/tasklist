@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/glebarez/sqlite v1.7.0
-	github.com/wailsapp/wails/v2 v2.4.0
+	github.com/wailsapp/wails/v2 v2.4.1
 	gorm.io/gorm v1.24.6
 )
 
