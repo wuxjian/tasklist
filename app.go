@@ -10,6 +10,9 @@ import (
 	"os/exec"
 )
 
+// 初始化次数
+var initCount = 0
+
 // App struct
 type App struct {
 	ctx context.Context
@@ -25,6 +28,10 @@ func NewApp() *App {
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
+	if initCount >= 1 {
+		log.Fatalf("重复启动")
+	}
+
 	log.Println("app init")
 	a.ctx = ctx
 	var err error
@@ -40,6 +47,8 @@ func (a *App) startup(ctx context.Context) {
 		log.Fatalf("初始化表失败%v", err)
 	}
 	log.Println("app init end")
+
+	initCount++
 }
 
 // Greet returns a greeting for the given name

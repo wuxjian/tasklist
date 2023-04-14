@@ -2,7 +2,7 @@ package main
 
 import (
 	"embed"
-
+	"github.com/labstack/gommon/log"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
@@ -14,6 +14,13 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Fatalf("系统奔溃%v\n", err)
+		}
+	}()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -30,6 +37,6 @@ func main() {
 	})
 
 	if err != nil {
-		println("Error:", err.Error())
+		log.Errorf("wails启动失败%v\n", err)
 	}
 }

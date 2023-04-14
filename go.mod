@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/glebarez/sqlite v1.7.0
+	github.com/labstack/gommon v0.3.1
 	github.com/wailsapp/wails/v2 v2.4.1
 	gorm.io/gorm v1.24.6
 )
@@ -18,7 +19,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/labstack/echo/v4 v4.9.0 // indirect
-	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/leaanthony/go-ansi-parser v1.0.1 // indirect
 	github.com/leaanthony/gosod v1.0.3 // indirect
 	github.com/leaanthony/slicer v1.5.0 // indirect
