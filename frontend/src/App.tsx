@@ -26,7 +26,7 @@ function App() {
             let timerId: any = null;
             const run = async () => {
                 await fetchData()
-                timerId = setTimeout(run, 3000);
+                // timerId = setTimeout(run, 3000);
             }
             await run()
             return () => {
@@ -34,14 +34,15 @@ function App() {
             }
         }
         doFetch()
-            .then(f => {
-                return f
-            })
+            .then(_ => {})
             .catch(console.error)
     }, [])
 
     const showModal = () => {
         setIsModalOpen(true);
+    };
+    const refresh = async () => {
+        await fetchData()
     };
 
     const clearCurApp = () => {
@@ -137,9 +138,10 @@ function App() {
         <div id="App">
             <div style={{textAlign: "right", marginTop: "20px", marginRight: "10px"}}>
                 <Button type="primary" onClick={() => showModal()}>添加</Button>
+                <Button type="primary" onClick={() => refresh()} style={{marginLeft: "20px"}}>刷新</Button>
             </div>
             <Divider/>
-            <Table columns={columns} dataSource={applicationList}/>
+            <Table columns={columns} dataSource={applicationList} pagination={false}/>
             <Modal title="新增/修改" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Input placeholder="name"
                        value={curApp.name}

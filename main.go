@@ -30,7 +30,8 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		OnStartup: app.startup,
+		WindowStartState: options.Normal,
+		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,
 		},
