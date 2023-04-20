@@ -1,0 +1,1 @@
+wails build -o taskmanager.exe -upx -ldflags "-s -w -H=windowsgui"

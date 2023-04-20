@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os/exec"
+	"syscall"
 )
 
 // 初始化次数
@@ -90,12 +91,14 @@ func (a *App) ApplicationList() []Application {
 
 func (a *App) ApplicationStart(p string) error {
 	c := exec.Command("cmd", "/c", "start", "/b", p)
+	c.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	return c.Run()
 }
 
 func (a *App) ApplicationStatus(appName string) bool {
 	var outBytes bytes.Buffer
 	c := exec.Command("cmd", "/c", "start", "/B", "tasklist", "|", "findstr", appName)
+	c.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	c.Stdout = &outBytes
 	err := c.Run()
 	if err != nil {
